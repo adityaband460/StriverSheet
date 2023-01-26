@@ -52,7 +52,7 @@ class Solution{
         
     }
 };
-// Another Solution given in gfg
+  // Another Solution given in gfg
 
     int minJumps(int arr[], int n){
             // Your code here
@@ -97,7 +97,7 @@ class Solution{
             return -1;
 
         }
-
+    
 
 //{ Driver Code Starts.
 
