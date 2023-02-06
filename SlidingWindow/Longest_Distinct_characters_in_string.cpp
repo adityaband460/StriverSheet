@@ -27,15 +27,20 @@ int longestSubstrDistinctChars (string S)
     unordered_map<char,int>freq;
     while( j < n)
     {
-        if(freq.find(S[j]) == freq.end() )
+        while(j < n && freq.find(S[j]) == freq.end() )
         {
-            maxlen = max(maxlen,j-i+1);
+           
             freq[S[j]] = 1;
+            j++;
            // cout<<S[j]<<" inserted\n";
             //cout<<"maxlen = "<<maxlen<<"\n";
         }
-        else
-        {
+        
+            maxlen = max(maxlen,j-i);
+            if(j == n) break;
+    
+             
+             
             freq[S[j]]++;
             while(freq[S[j]] != 1)
             {
@@ -50,7 +55,7 @@ int longestSubstrDistinctChars (string S)
               //  cout<<S[i]<<" erased\n";
                 i++;
             }
-        }
+        
 
         j++;
     }
