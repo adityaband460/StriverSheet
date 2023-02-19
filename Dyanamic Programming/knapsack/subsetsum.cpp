@@ -47,6 +47,7 @@ public:
         {
             table[i][0] = true;
         }
+        //table[0][0]  will be true;
         // i j = n sum
         for(int i=1;i<n+1;i++)
         {
