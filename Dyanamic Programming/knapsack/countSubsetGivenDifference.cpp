@@ -46,17 +46,21 @@ class Solution {
     
     //  also no solution when difference is greater than sum of arr
     // as max diff possible is sum of arr only
-       if((sum - d)%2  != 0  ||  d > sum)
+     
+       if((sum - d)%2 != 0 )
         {
             return 0;
         }
-        else
-        {
-            vector<vector<int>> table(n+1,vector<int>(sum+1,-1));
-            int partSumS1 = (sum - d )/2;
-            // cout<<sum<<"  <--\n";
-            return countSubsetSum(n,partSumS1,table,arr);
-        }
+        // sum-d should lie between 0 and 2*sum
+        int val = sum-d;
+        if( !(val <= 2*sum && val >= 0) )
+            return 0;
+        // else do the calculations
+          vector<vector<int>> table(n+1,vector<int>(sum+1,-1));
+          int partSumS1 = (sum - d )/2;
+          // cout<<sum<<"  <--\n";
+          return countSubsetSum(n,partSumS1,table,arr);
+        
       
     }
 };
