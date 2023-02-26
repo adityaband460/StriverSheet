@@ -1,7 +1,23 @@
 // solved on leetcode
 class Solution {
 public:
-
+    int countTopDown(vector<int>&nums,int sum,int n, vector<vector<int>> &table)
+    {
+        table[0][0] = 1;
+        for(int i=1;i<n+1;i++)
+        {
+            for(int j=0;j<sum+1;j++)
+            {
+                if(nums[i-1] <= j)
+                {
+                    table[i][j] = table[i-1][j] +table[i-1][j-nums[i-1]];
+                }
+                else
+                    table[i][j]= table[i-1][j];
+            }
+        }
+        return table[n][sum];
+    }
     int countSubsetSum(vector<int>&nums,int sum,int n, vector<vector<int>> &table)
     {
         if(n==0)
