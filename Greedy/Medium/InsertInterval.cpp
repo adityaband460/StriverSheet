@@ -26,6 +26,7 @@ class Solution {
         {
             return true;
         }
+      return false;
         
     }
     vector<vector<int>> insertNewEvent(int N, vector<vector<int>> &intervals, vector<int> &newEvent) {
