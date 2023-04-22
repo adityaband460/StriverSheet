@@ -14,7 +14,39 @@ vector<string> AllParenthesis(int n) ;
 class Solution
 {
     public:
-    
+    ///////////////little optimized
+void moreEasier(int n,int lcount,int rcount,string temp,vector<string>&output)
+    {
+        //base case
+        if(lcount == n && rcount == n)
+        {
+            output.push_back(temp);
+            return;
+        }
+        
+        //rec case
+        // if lcount less than n and lcount can't go beyond n
+        
+        if(lcount < n)
+        {
+            temp.push_back('(');
+            lcount++;
+            moreEasier(n,lcount,rcount,temp,output);
+            temp.pop_back();
+            lcount--;
+        }
+        
+        // if left bracket are more than right brackets
+        
+        if(lcount > rcount)
+        {
+            temp.push_back(')');
+            rcount++;
+            moreEasier(n,lcount,rcount,temp,output);
+        }
+    }
+	
+	
     void helper(int n,int lcount,int rcount,string temp, int i,vector<string>&output)
     {
         // base case 
