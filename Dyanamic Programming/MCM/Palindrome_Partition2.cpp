@@ -56,13 +56,26 @@ public:
         // return mincuts(0,str,dp);
         
         //tabulation
+        
+        //to make it O(n*n)
+        // precompute all substrings whether they are palindrome or not
+        // then just look up from that 2d array in O(1)
         int n = str.length();
         vector<int>dp(n,1e9);
-
+        vector<vector<bool>>palicheck(n,vector<bool>(n,false));
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i;j<n;j++)
+            {
+                palicheck[i][j] = isPalindrome(str,i,j);
+            }
+        }
+        
+        
         for(int i=n-1;i>=0;i--)
         {
             //base case
-            if(isPalindrome(str,i,n-1)) // is string is already pali 0 cuts needed
+            if(palicheck[i][n-1]) // is string is already pali 0 cuts needed
             {
                 dp[i] = 0;
                 continue;
@@ -73,7 +86,7 @@ public:
             {
              
               // call only if left partion is palindrome
-              if(isPalindrome(str,i,ind-1)) 
+              if(palicheck[i][ind-1]) 
               {
                   //then total cuts= 1for partion + cuts for right partition
                   int cuts = 1 + dp[ind];
