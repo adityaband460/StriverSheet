@@ -14,36 +14,20 @@ class Solution
         vector<long long>ans(n,-1);
         for(int i=n-1;i>=0;i--)
         {
+            // remove smaller elements from stack
+            while(!st.empty() && st.top() <= arr[i])
+            {
+                st.pop();
+            }
             if(st.empty())
             {
-               st.push(arr[i]); 
+                ans[i] = -1;
             }
             else
             {
-                if(st.top() > arr[i])
-                {
-                    ans[i] = st.top();
-                    st.push(arr[i]);
-                }
-                else
-                {
-                    while(!st.empty() && st.top() <= arr[i])
-                    {
-                        st.pop();
-                    }
-                    if(!st.empty()&& st.top() > arr[i])
-                    {
-                        ans[i] = st.top();
-                        st.push(arr[i]);
-                    }
-                    else
-                    
-                    {
-                        st.push(arr[i]);
-                    }
-                }
+                ans[i] = st.top();
             }
-            
+            st.push(arr[i]);
         }
         return ans;
     }
