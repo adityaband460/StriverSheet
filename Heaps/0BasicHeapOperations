@@ -76,3 +76,18 @@ void MinHeap::MinHeapify(int i)
         MinHeapify(smallest);
     }
 }
+
+// Function to build a MIn-Heap from the given array
+// O(N) time complexity
+void buildHeap(int arr[], int N)
+{
+    // Index of last non-leaf node
+    int startIdx = (N / 2) - 1;
+ 
+    // Perform reverse level order traversal
+    // from last non-leaf node and heapify
+    // each node
+    for (int i = startIdx; i >= 0; i--) {
+        MinHeapify(i);
+    }
+}
