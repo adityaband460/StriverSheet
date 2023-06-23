@@ -1,77 +1,76 @@
-void printLeaves(struct Node* root, vector <int> &res)
+
+
+
+bool isLeaf(Node *curr)
     {
-        if (root == NULL)
-            return;
-
-        printLeaves(root->left, res);
-
-        // Print it if it is a leaf node
-        if (!(root->left) && !(root->right))
-            res.push_back (root->data);
-
-        printLeaves(root->right, res);
+        return !curr->left && !curr->right;
     }
-
-// A function to print all left boundary nodes, except a leaf node.
-// Print the nodes in TOP DOWN manner
-    void printBoundaryLeft(struct Node* root, vector <int> &res)
+    void leftBoundary(Node* curr,vector<int> & ans)
     {
-        if (root == NULL)
-            return;
-
-        if (root->left) {
-
-            // to ensure top down order, print the node
-            // before calling itself for left subtree
-            res.push_back (root->data);
-            printBoundaryLeft(root->left, res);
+        while(curr != NULL)
+        {
+            // if it is not a leaf node
+            if(!isLeaf(curr))
+                ans.push_back(curr->data);
+            
+            if(curr->left != NULL)
+                curr = curr->left;
+            else 
+                curr = curr->right;
         }
-        else if (root->right) {
-            res.push_back (root->data);
-            printBoundaryLeft(root->right, res);
-        }
-        // do nothing if it is a leaf node, this way we avoid
-        // duplicates in output
     }
-
-// A function to print all right boundary nodes, except a leaf node
-// Print the nodes in BOTTOM UP manner
-    void printBoundaryRight(struct Node* root, vector <int> &res)
+    void rightBoundary(Node* curr,vector<int> & ans)
     {
-        if (root == NULL)
-            return;
-
-        if (root->right) {
-            // to ensure bottom up order, first call for right
-            // subtree, then print this node
-            printBoundaryRight(root->right, res);
-            res.push_back (root->data);
+        vector<int>temp;
+        while(curr != NULL)
+        {
+            if(!isLeaf(curr))
+                temp.push_back(curr->data);
+            
+            if(curr->right != NULL)
+                curr = curr->right;
+            else 
+                curr = curr->left;
         }
-        else if (root->left) {
-            printBoundaryRight(root->left, res);
-            res.push_back (root->data);
+        //reverse the temp and push in ans
+        reverse(temp.begin(),temp.end());
+        for(int i=0;i<temp.size();i++)
+        {
+            ans.push_back(temp[i]);
         }
-        // do nothing if it is a leaf node, this way we avoid
-        // duplicates in output
     }
-
-// A function to do boundary traversal of a given binary tree
-public:
-    vector <int> boundary(struct Node* root)
+    void preOrder(Node* root,vector<int>&ans)
     {
-        vector <int> res;
-        if (root == NULL)
-            return res;
-
-        res.push_back (root->data);
-
-        // Print the left boundary in top-down manner.
-        printBoundaryLeft(root->left, res);
-
-        // Print all leaf nodes
-        printLeaves(root->left, res);
-        printLeaves(root->right, res);
-
-        // Print the right boundary in bottom-up manner
-        printBoundaryRight(root->right, res);
+        if(root == NULL)return;
+        
+        //if root is leaf node push in ans
+        if(root->left == NULL && root->right == NULL)
+            ans.push_back(root->data);
+        preOrder(root->left,ans);
+        preOrder(root->right,ans);
+    }
+    vector <int> boundary(Node *root)
+    {
+        vector<int>ans;
+        //left boundary
+        Node* curr = root;
+        if(curr == NULL) return ans;
+        
+        ans.push_back(root->data);
+        if(isLeaf(curr))
+            return ans;
+            
+        //////////////////
+        curr = curr->left;
+        leftBoundary(curr,ans);
+        
+        //leaves
+        preOrder(root,ans);
+        
+        // right boundary in reverse
+        curr = root->right;
+         rightBoundary(curr,ans);
+        
+        
+        return ans;
     }
