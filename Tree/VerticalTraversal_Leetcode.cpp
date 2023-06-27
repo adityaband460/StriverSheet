@@ -1,5 +1,7 @@
 vector < vector < int >> findVertical(node * root) {
+  // vertical num , level num , nodes at that pos in sorted order
   map < int, map < int, multiset < int >>> nodes;
+  // that node , its vertical num, its level num
   queue < pair < node * , pair < int, int >>> todo;
   todo.push( {root,{0, 0}} ); //initial vertical and level
   while (!todo.empty()) {
@@ -15,8 +17,8 @@ vector < vector < int >> findVertical(node * root) {
       todo.push({
         temp -> left,
         {
-          x - 1,
-          y + 1
+          x - 1,  //reduce vertical by 1
+          y + 1   // increase level by 1
         }
       });
     }
@@ -24,16 +26,16 @@ vector < vector < int >> findVertical(node * root) {
       todo.push({
         temp -> right,
         {
-          x + 1,
-          y + 1
+          x + 1, //increase vertical by 1
+          y + 1  // increase level by 1
         }
       });
     }
   }
   vector < vector < int >> ans;
-  for (auto p: nodes) {
+  for (auto p: nodes) { // p :  ( vertical -> map(level,multiset) )
     vector < int > col;
-    for (auto q: p.second) {
+    for (auto q: p.second) { // q : (level -> multiset)
       col.insert(col.end(), q.second.begin(), q.second.end());
     }
     ans.push_back(col);
