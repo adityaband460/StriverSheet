@@ -8,7 +8,8 @@
         int lh = heightModified(root->left,maxi);
         int rh = heightModified(root->right,maxi);
         
-        maxi = max(maxi, lh+rh+1);
+        maxi = max(maxi, lh+rh+1); // this is real game
+     // return height only while returning 
         return max(lh,rh)+1;
     }
     int diameter(Node* root) {
