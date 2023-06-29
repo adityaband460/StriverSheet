@@ -45,6 +45,7 @@ void inOrder(Node* root,vector<int> &ans)
        ans = merge(r1,r2);// n1+n2
        return ans;  // ans is simply returning inorder of 2 merged bst
     }
+//  Build a Balanced BST
     Node* build(int start,int end,vector<int>in)
     {
         if(start > end) return NULL;
