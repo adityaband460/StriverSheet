@@ -21,3 +21,5 @@
         return BuildBSTfromPre(pre,a,size,INT_MAX);
         
     }
+// if this approach is hard try below approach
+// https://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/
