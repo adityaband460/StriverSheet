@@ -1,7 +1,7 @@
 // isReverse = true means iterator will move (end to start) and upon calling
 // next() method will move backwords (inorder traversal);
 // if(isReverse==false) means iterator will move start to end and upon calling
-// next() method will move forward (inorder);
+// next() method will move forward (inorder); 
 class BSTiterator
 {
     private:
