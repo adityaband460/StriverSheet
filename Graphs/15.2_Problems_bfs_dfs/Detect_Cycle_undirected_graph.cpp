@@ -1,3 +1,4 @@
+// both methods included
 bool bfs(int node,int par,vector<int>&vis,vector<int>adj[])
     {
         queue<pair<int,int>>q;
