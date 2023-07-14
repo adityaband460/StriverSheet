@@ -1,3 +1,6 @@
+// think in reverse way 
+// insted of going to 0 's from 1 's
+// go from 1's to 0's and bfs give min distance to put their distances
 void bfs(vector<vector<int>>&grid,vector<vector<int>>&vis,
     vector<vector<int>>&dist,queue<pair<pair<int,int>,int>> &q)
     {
