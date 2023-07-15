@@ -1,4 +1,5 @@
- bool dfs(int node,vector<int>adj[],vector<int>&color,int col)
+
+bool dfs(int node,vector<int>adj[],vector<int>&color,int col)
     {
         color[node] = col;
         
