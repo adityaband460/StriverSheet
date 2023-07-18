@@ -1,4 +1,4 @@
-int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
+ int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
                      pair<int, int> destination) {
        
        // Dijkstra algo :similar to normal BFS only as all dist are same (1)
@@ -29,6 +29,12 @@ int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
                if(nrow >=0 && nrow <n && ncol >=0 && ncol <m
                && grid[nrow][ncol]==1 && dist[nrow][ncol]>altdist)
                {
+                   // as it is bfs , we will go level wise
+                   // so ans will always come on as we find destination
+                //   as neighbour ,no need to explore further
+                   if(nrow == destination.first && ncol == destination.second)
+                        return altdist;
+                   
                    dist[nrow][ncol]=altdist;
                    q.push({nrow,ncol});
                }
@@ -40,6 +46,6 @@ int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
             if(dist[i][j] >= 1e9)
                 dist[i][j] = -1;
         }
-       
+       // in case of src == destination edge case
        return dist[destination.first][destination.second];
     }
