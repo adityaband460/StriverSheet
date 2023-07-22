@@ -1,0 +1,70 @@
+class DisjointSet{
+    public:
+        vector<int>rank,parent;
+        DisjointSet(int n)
+        {
+            rank.resize(n,0);
+            parent.resize(n);
+            for(int i=0;i<n;i++)
+            {
+                parent[i] = i;
+            }
+        }
+    int findUParent(int u)
+    {
+        if(parent[u] == u)return u;
+        
+        return parent[u] = findUParent(parent[u]);
+    }
+    void unionbyrank(int u,int v)
+    {
+        int pu = findUParent(u);
+        int pv = findUParent(v);
+        
+        if(pu == pv) return ;
+        
+        if(rank[pv] < rank[pu])
+        {
+            // cout<<"parent of "<<pv<<" is "<<pu<<"\n";
+            parent[pv] = pu;
+        }
+        else if(rank[pu] < rank[pv])
+        {
+            // cout<<"parent of "<<pu<<" is "<<pv<<"\n";
+            parent[pu] = pv;
+        }
+        else
+        {
+            // cout<<"parent of "<<pu<<" is "<<pv<<"\n";
+            parent[pu] = pv;
+            rank[pv]++;
+        }
+    }
+};
+class Solution {
+  public:
+    int Solve(int n, vector<vector<int>>& edge) {
+        
+        int E = edge.size();
+        if(E < n-1)
+            return -1;
+        // E >= V-1 it is possible to connect to all vertices
+        
+        DisjointSet ds(n);
+        for(auto it : edge)
+        {
+            int u = it[0];
+            int v = it[1];
+            if(ds.findUParent(u) != ds.findUParent(v))
+                ds.unionbyrank(u,v);
+        }
+        // find no of ultimate parents
+        // no of ultimate parents = no of connected components
+        int cnt = 0;
+        for(int i=0;i<n;i++)
+        {
+            if(ds.parent[i] == i)
+                cnt++;
+        }
+        return cnt-1;
+    }
