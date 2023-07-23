@@ -1,0 +1,111 @@
+class DisjointSet{
+   public :
+   vector<int> rank, parent, size;
+
+    DisjointSet(int n)
+    {   // to support 1 based indexing as well
+        rank.resize(n+1,0);
+        parent.resize(n+1);
+        size.resize(n+1,1);
+        for(int i=0;i<=n;i++)
+        {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    //using path compression
+    int findUltimateParent(int u)
+    {
+        if(parent[u]==u)
+        {
+            return u;
+        }
+        return parent[u] = findUltimateParent(parent[u]);
+    }
+// use any one of union b yrank or union by size
+    void unionByRank(int u ,int v)
+    {
+        int pu = findUltimateParent(u);
+        int pv = findUltimateParent(v);
+        
+        if(pu == pv) return; // they are already connected
+        
+        if(rank[pu] < rank[pv])
+        {
+            parent[pu]= pv;
+        }
+        else if(rank[pu] > rank[pv])
+        {
+            parent[pv] = pu;
+        }
+        else // their ranks are equal
+        {
+            parent[pu] = pv;
+            rank[pu]++;
+        }
+    }
+    void unionBySize(int u ,int v)
+    {
+        int pu = findUltimateParent(u);
+        int pv = findUltimateParent(v);
+        
+        if(pu == pv) return; // they are already connected
+        
+        if(size[pu] < size[pv])
+        {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        }
+        else
+        {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
+    }
+};
+class Solution {
+  public:
+    int maxRemove(vector<vector<int>>& stones, int n) {
+        
+        // find row and col for matrix
+        int maxRow =0,maxCol=0;
+        for(auto it : stones)
+        {
+            int nodeRow = it[0];
+            int nodeCol = it[1] + maxRow + 1;
+            maxRow = max(nodeRow,maxRow);
+            maxCol = max(nodeCol,maxCol);
+        }
+        //consider entire rows and cols as nodes
+        DisjointSet ds(maxRow+maxCol+1);
+        //set to reduce time complexity , we can avoid empty rows,cols
+        unordered_set<int> s;
+        for(auto it : stones)
+        {
+            int nodeRow = it[0];
+            int nodeCol = it[1] + maxRow + 1;
+            // both can be used
+            ds.unionBySize(nodeRow,nodeCol); 
+            s.insert(nodeRow);
+            s.insert(nodeCol);
+        }
+
+        // to avoid empty row,col components
+        int nc = 0;
+        for(auto it : s)
+        {
+            if( ds.parent[it]==it)
+                nc++;
+        }
+        //or  
+        // without using set , traverse whole size array
+        // thos who has size>1 are not empty row,col
+        // ans par[i] = i means it is ultimate parent 
+         // for(int i=0;i<row+col+1;i++)
+        // {
+        //     if(ds.size[i] > 1 && ds.parent[i]==i)
+        //         nc++;
+        // }
+        return n - nc;
+    }
+};
