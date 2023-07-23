@@ -89,7 +89,7 @@ class Solution {
             s.insert(nodeRow);
             s.insert(nodeCol);
         }
-
+        // O(n) using set
         // to avoid empty row,col components
         int nc = 0;
         for(auto it : s)
@@ -98,10 +98,12 @@ class Solution {
                 nc++;
         }
         //or  
+        
+        // O(maxrow + maxcol) without set
         // without using set , traverse whole size array
         // thos who has size>1 are not empty row,col
         // ans par[i] = i means it is ultimate parent 
-         // for(int i=0;i<row+col+1;i++)
+        //   for(int i=0;i<maxRow+maxCol+1;i++)
         // {
         //     if(ds.size[i] > 1 && ds.parent[i]==i)
         //         nc++;
