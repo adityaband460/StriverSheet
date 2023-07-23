@@ -1,0 +1,55 @@
+	void dfs(int node ,vector<vector<int>>&adj,vector<int>&vis,stack<int>&st)
+	{//vpn
+	    vis[node]=1;
+	    
+	    for(auto nbr : adj[node])
+	    {
+	        if(vis[nbr] == 0)
+	        dfs(nbr,adj,vis,st);
+	    }
+	    // store according to finishing time
+	    st.push(node);
+	}
+	//Function to find number of strongly connected components in the graph.
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        // sort according to finishing time
+        stack<int>st;
+        vector<int>vis(V,0);
+        for(int i=0;i<V;i++)
+        {
+            if(vis[i]==0)
+            {
+                dfs(i,adj,vis,st);
+            }
+        }
+        
+        // reverse the graph
+        vector<vector<int>>revAdj(V);
+        for(int i=0;i<V;i++)
+        {
+            for(auto j : adj[i])
+            {
+                revAdj[j].push_back(i);
+            }
+        }
+        
+        // do dfs, 
+        int sccCount = 0;
+        vis.clear();
+        vis.resize(V,0);
+        stack<int>t;//something nonsense
+        
+        // last finishing node will be in 1st scc
+        while(!st.empty())
+        {
+            int node = st.top();
+            st.pop();
+            if(vis[node]==0)
+            {
+                dfs(node,revAdj,vis,t);
+                sccCount++;
+            }
+        }
+        return sccCount;
+    }
