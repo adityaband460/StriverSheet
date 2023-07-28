@@ -64,12 +64,12 @@ int solveSpaceOpti(int n,int m,string &s,string &t)
         // use double to handle large values
         vector<double>prev(m+1,0),cur(m+1,0);
         prev[0] = 1;
-        
+        cur[0] = 1;
+        // cur[0] and prev[0] won't be modified in for loops
         //base case
         
         for(int i=1;i<=n;i++)
         {
-            prev[0] = 1;
             for(int j=1;j<=m;j++)
             {
                 if(s[i-1] == t[j-1])
@@ -94,10 +94,9 @@ int solveSpaceOpti1d(int n,int m,string &s,string &t)
         // use double to handle large values
         vector<double>prev(m+1,0); 
         //base case
-        
+        prev[0] = 1;
         for(int i=1;i<=n;i++)
         {
-            prev[0] = 1;
             for(int j=m;j>=1;j--)
             {
                 if(s[i-1] == t[j-1])
@@ -117,6 +116,6 @@ int solveSpaceOpti1d(int n,int m,string &s,string &t)
         int n = s.size();
         int m = t.size();
         vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
-        return solveSpaceOpti1d(n,m,s,t);
+        return solveSpaceOpti(n,m,s,t);
     }
 };
