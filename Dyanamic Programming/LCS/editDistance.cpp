@@ -1,103 +1,87 @@
 class Solution {
 public:
-    int min(int a,int b)
+    //memoization
+    int solve(int n,int m ,string &s1,string &s2,vector<vector<int>>&dp)
     {
-        if(a < b)
-            return a;
-        else 
-            return b;
-    }
-    int min3(int a,int b ,int c)
-    {
-       return min(a,min(b,c));             
-    }
-    int solve(string s1,string s2, int n , int m,vector<vector<int>>&table)
-    {
-        // when any of string gets empty
-        if(n==0)
-           { return m;}
-        if(m ==0)
-            {return n;}
-        
-        if(table[n][m] != -1)
-            return table[n][m];
-        //rec case
-        if(s1[n-1] == s2[m-1])
+        if(n==0 )return m;
+        if(m==0) return n;
+
+        if(dp[n][m] != -1) return dp[n][m];
+        if(s1[n-1]==s2[m-1])
         {
-            return table[n][m] = solve(s1,s2,n-1,m-1,table);
+            return dp[n][m] = solve(n-1,m-1,s1,s2,dp);
         }
         else
         {
-        int insertions = 1 + solve(s1,s2,n,m-1,table);
-        int deletions = 1 + solve(s1,s2,n-1,m,table);
-        int replaces = 1 + solve(s1,s2,n-1,m-1,table);
-
-        return table[n][m] = min3(insertions,deletions,replaces);
+            int i = 1 + solve(n,m-1,s1,s2,dp);
+            int d = 1 + solve(n-1,m,s1,s2,dp);
+            int r = 1 + solve(n-1,m-1,s1,s2,dp);
+            return dp[n][m] = min(i,min(d,r));
         }
-        
     }
-    int tabularization(string s1,string s2, int n , int m,vector<vector<int>>&table)
+    //tabulation
+    int solveTab(int n,int m ,string &s1,string &s2,vector<vector<int>>&dp)
     {
         for(int i=0;i<n+1;i++)
         {
-            table[i][0] = i;
+            dp[i][0] = i;
         }
         for(int j=0;j<m+1;j++)
         {
-            table[0][j] = j;
+            dp[0][j] = j;
         }
-        for(int i=1;i<n+1;i++)
+        for(int i=1;i<=n;i++)
         {
-            for(int j=1;j<m+1;j++)
+            for(int j=1;j<=m;j++)
             {
-                if(s1[i-1] == s2[j-1])
+                if(s1[i-1]==s2[j-1])
                 {
-                     table[i][j] = table[i-1][j-1];
+                    dp[i][j] = dp[i-1][j-1];
                 }
                 else
                 {
-                    table[i][j] = min3(1+table[i-1][j-1],1+table[i-1][j],1+table[i][j-1]);
+                    int in = 1 + dp[i][j-1];
+                    int d = 1 + dp[i-1][j];
+                    int r = 1 + dp[i-1][j-1];
+                    dp[i][j] = min(in,min(d,r));
                 }
-               
             }
         }
-        return table[n][m];
+        return dp[n][m];
     }
-    int spaceopti(string s1,string s2, int n , int m)
+     //space opti
+    int solveSpaceopti(int n,int m ,string &s1,string &s2,vector<vector<int>>&dp)
     {
-        vector<int>prev(m+1,-1),curr(m+1,-1);
+        vector<int>prev(m+1,0),cur(m+1,0);
         for(int j=0;j<m+1;j++)
         {
             prev[j] = j;
-            curr[j] = j;
         }
-        for(int i=1;i<n+1;i++)
+        for(int i=1;i<=n;i++)
         {
-            for(int j=0;j<m+1;j++)
+            cur[0] = i;
+            for(int j=1;j<=m;j++)
             {
-                if(j == 0)
+                if(s1[i-1]==s2[j-1])
                 {
-                    curr[j] = i;
-                    continue;
-                }
-                if(s1[i-1] == s2[j-1])
-                {
-                    curr[j] = prev[j-1];
+                    cur[j] = prev[j-1];
                 }
                 else
                 {
-                    curr[j] = min3(1+prev[j-1],1+prev[j],1+curr[j-1]);
+                    int in = 1 + cur[j-1];
+                    int d = 1 + prev[j];
+                    int r = 1 + prev[j-1];
+                    cur[j] = min(in,min(d,r));
                 }
-               
             }
-            prev = curr;
+            prev = cur;
         }
-        return curr[m];
+        return prev[m];
     }
     int minDistance(string word1, string word2) {
-        int n = word1.length();
-        int m = word2.length();
-        vector<vector<int>>table(n+1,vector<int>(m+1,-1));
-        return spaceopti(word1,word2,n,m);
+        int n = word1.size();
+        int m = word2.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        return solveSpaceopti(n,m,word1,word2,dp);
     }
 };
