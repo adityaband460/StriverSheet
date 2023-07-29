@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        int maxProfit = 0;
+        int smaller = prices[0];
+
+        for(int i=1;i<n;i++)
+        {
+            // assume selling at i th day
+            int profit = prices[i] - smaller;
+            smaller = min(smaller,prices[i]);
+            maxProfit = max(maxProfit,profit);
+        }
+        return maxProfit;
+    }
+};
