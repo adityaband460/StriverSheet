@@ -1,0 +1,88 @@
+class Solution {
+public:
+    // memoization
+    int solve(int ind,int buy,vector<int>&prices,vector<vector<int>>&dp)
+    {
+        int n = prices.size();
+        if(ind==n)
+            return 0;
+        if(buy == 4) 
+            return 0;
+        if(dp[ind][buy] != -1) return dp[ind][buy];
+        if(buy % 2 == 0)
+        {
+            return dp[ind][buy] = max( -prices[ind] + solve(ind+1,buy+1,prices,dp),
+                        0 + solve(ind+1,buy,prices,dp));
+        }
+        else
+        {
+            return dp[ind][buy] = max( prices[ind] + solve(ind+1,buy+1,prices,dp),
+                        0 + solve(ind+1,buy,prices,dp));
+        }
+    }
+    // Tabulation
+    int solveTab(int ind,int buy,vector<int>&prices,vector<vector<int>>&dp)
+    {
+        int n = prices.size();
+        
+        //base case
+        for(int i=0;i<=4;i++)
+        {
+            dp[n][i] = 0;
+        }
+        for(int i=0;i<=n;i++)
+        {
+            dp[i][4] = 0;
+        }
+
+        for(int i= n-1; i >=0 ;i--)
+        {
+            for(int j = 3;j>=0 ;j--)
+            {
+                if(j % 2 == 0)
+                {
+                    dp[i][j] = max( -prices[i] + dp[i+1][j+1],
+                                0 + dp[i+1][j]);
+                }
+                else
+                {
+                    dp[i][j] = max( prices[i] + dp[i+1][j+1],
+                                0 + dp[i+1][j]);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+    // Space Opti
+    int solveSpaceOpti(int ind,int buy,vector<int>&prices,vector<vector<int>>&dp)
+    {
+        int n = prices.size();
+        
+        vector<int>next(5,0),cur(5,0);
+        //base case covered
+        
+        for(int i= n-1; i >=0 ;i--)
+        {
+            for(int j = 3;j>=0 ;j--)
+            {
+                if(j % 2 == 0)
+                {
+                    cur[j] = max( -prices[i] + next[j+1],
+                                0 + next[j]);
+                }
+                else
+                {
+                    cur[j] = max( prices[i] + next[j+1],
+                                0 + next[j]);
+                }
+            }
+            next = cur;
+        }
+        return next[0];
+    }
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>>dp(n+1,vector<int>(5,-1));
+        return solveSpaceOpti(0,0,prices,dp);
+    }
+};
