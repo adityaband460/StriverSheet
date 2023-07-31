@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+	vector<int> printingLongestIncreasingSubsequence(vector<int> arr, int n) {
+		//Initialize all to 1
+		vector<int>dp(n,1);
+		
+		// so that we can trace back
+		vector<int>hash(n,0);
+
+		for(int i=0;i<n;i++)
+		{
+			hash[i] = i;
+		}
+		int maxi = 0,maxindex = 0;
+		for(int ind=1;ind<n;ind++)
+		{
+			for(int prev=0;prev<ind;prev++)
+			{
+				if(arr[ind]>arr[prev])
+				{
+					if(dp[prev]+1 > dp[ind])
+					{
+						dp[ind] = dp[prev]+1;
+						hash[ind] = prev;
+					}
+				}
+			}
+			if(maxi < dp[ind])
+			{
+				maxi = dp[ind];
+				maxindex = ind;
+			}
+			
+		}
+		// maxi is length of LIS
+		// now trace back from maxindex
+		vector<int>lis;
+		lis.push_back(arr[maxindex]);
+		while(maxindex != hash[maxindex])
+		{
+			maxindex = hash[maxindex];
+			lis.push_back(arr[maxindex]);
+		}		
+		reverse(lis.begin(),lis.end());
+		return lis;
+		
+	}
