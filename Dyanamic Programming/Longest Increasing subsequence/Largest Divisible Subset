@@ -1,0 +1,38 @@
+vector<int> largestDivisibleSubset(vector<int>& nums) {
+        // to make sure all pairs satisfy the condition
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        vector<int>dp(n,1),hash(n,0);
+        for(int i=0;i<n;i++)
+        {
+            hash[i] = i;
+        }
+        int maxi =0,maxindex = 0;
+        for(int i=1;i<n;i++)
+        {
+            for(int prev = 0;prev<i;prev++)
+            {
+                if(nums[i] % nums[prev] == 0 && dp[i] < dp[prev]+1)
+                {
+                    dp[i] = dp[prev] + 1;
+                    hash[i] = prev;
+                }
+            }
+            if(dp[i] > maxi)
+            {
+                maxi = dp[i];
+                maxindex = i;
+            }
+        }
+
+        //trace back using hash and last index is maxindex
+        vector<int>lds;
+        lds.push_back(nums[maxindex]);
+        while(hash[maxindex] != maxindex)
+        {
+            maxindex = hash[maxindex];
+            lds.push_back(nums[maxindex]);
+        }
+        reverse(lds.begin(),lds.end());
+        return lds;
+    }
