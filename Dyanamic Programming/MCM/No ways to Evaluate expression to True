@@ -1,0 +1,61 @@
+// istrue == t means , return the ways in which expression is evaluated to true
+    int ways(int i,int j,bool istrue,string s,vector<vector<vector<int>>>&dp){
+        //base case
+        if(i>j) return 0;
+        if(i==j) {
+            if(istrue == 1) 
+                return s[i]=='T';
+            else  
+                return s[i]=='F';
+        }
+        if(dp[i][j][istrue] != -1)
+            return dp[i][j][istrue];
+        //rec case
+        int numways = 0;
+        for(int k=i+1;k<=j-1;k+=2){
+            
+            int z = 0;
+            int lt = ways(i,k-1,true,s,dp)%mod;
+            int lf = ways(i,k-1,false,s,dp)%mod;
+            int rt = ways(k+1,j,true,s,dp)%mod;
+            int rf = ways(k+1,j,false,s,dp)%mod;
+            
+            if(s[k]=='&')
+            {
+                if(istrue)// ways in which and of 2 is true : TT
+                {
+                    //left exp is true and right exp is true
+                    numways = (numways+lt * rt)%mod;
+                }
+                else{// TF FT FF
+                    numways = ((numways+lt*rf + lf*rt)%mod + lf*rf)%mod;
+                }
+            }
+            else if(s[k]=='|'){
+                if(istrue)// ways in which or of 2 is true : TF FT TT
+                {
+                    //left exp is true and right exp is true
+                    numways = (numways+lt*rf + lf*rt + lt*rt)%mod;
+                }
+                else{// FF
+                    numways =  (numways+lf*rf)%mod;
+                }
+            }
+            else{//xor
+                if(istrue)// ways in which xor of 2 is true : TF FT
+                {
+                    //left exp is true and right exp is true
+                    numways = (numways+lt*rf + lf*rt)%mod;
+                }
+                else{// FF TT
+                    numways =  (numways+lf*rf + lt*rt)%mod;
+                }
+            }
+           
+        }
+        return dp[i][j][istrue] = (numways)%mod;
+    }
+    int countWays(int N, string S){
+        vector<vector<vector<int>>>dp(N,vector<vector<int>>(N,vector<int>(2,-1)));
+        return ways(0,N-1,true,S,dp);
+    }
