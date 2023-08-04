@@ -1,85 +1,38 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-class Solution {
-  public:
-    vector<int> max_of_subarrays(vector<int> arr, int n, int k) {
-        // your code here
-        deque<int> q;
-        vector<int> ans;
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int>ans;
+        // to store indexs of max numbers
+        deque<int>dq;
         int i=0,j=0;
-        // process 1st window
-        //push indexes instead of numbers
-        for(j;j<k;j++)
+        while(j-i+1 <= k)
         {
-            if(q.empty())
+            //pop back un-necessary element in dq
+            while(!dq.empty() && nums[dq.back()] <= nums[j])// try with < op
             {
-                q.push_back(j);
+                dq.pop_back();
             }
-            else
-            {
-                while(!q.empty() && arr[q.back()] < arr[j])
-                {
-                    q.pop_back();
-                }
-                 q.push_back(j);
-            }
-        }
-        j--; // to make j point at k-1 end of 1st window
-        // process remaining windows
-        while(j < n)
-        {
-            ans.push_back(arr[q.front()]);
-            
+            dq.push_back(j);
             j++;
-            // add j to window calculations
-            if(q.empty())
+        }
+        
+        ans.push_back(nums[dq.front()]);
+        int n = nums.size();
+        while( j < n)
+        {
+            // invalid due to window sliding further
+            if(!dq.empty() && dq.front()== i)
             {
-                q.push_back(j);
-            }
-            else
-            {
-                while(!q.empty() && arr[q.back()] < arr[j])
-                {
-                    q.pop_back();
-                }
-                 q.push_back(j);
-            }
-            // remove i from window calculations
-            
-            if(arr[q.front()] == arr[i])
-            {
-                q.pop_front();
+                dq.pop_front();
             }
             i++;
+            //pop back smaller than nums[j] from dq
+            while(!dq.empty() && nums[dq.back()]<= nums[j])
+            {
+                dq.pop_back();
+            }
+            dq.push_back(j);
+            
+            ans.push_back(nums[dq.front()]);
+            j++;
         }
         return ans;
     }
-};
-
-//{ Driver Code Starts.
-
-int main() {
-
-    int t;
-    cin >> t;
-
-    while (t--) {
-
-        int n, k;
-        cin >> n >> k;
-
-        vector<int> arr(n);
-        for (int i = 0; i < n; i++) cin >> arr[i];
-        Solution ob;
-        vector<int> res = ob.max_of_subarrays(arr, n, k);
-        for (int i = 0; i < res.size(); i++) cout << res[i] << " ";
-        cout << endl;
-    }
-
-    return 0;
-}
-// } Driver Code Ends
