@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        
+        int i=0,j=0;
+        int maxlen = 0;
+        int n = fruits.size();
+        unordered_map<int,int>map;
+        int k = 2;
+        while( j < n)
+        {
+            map[fruits[j]]++;
+
+            if(map.size() < k)
+            {
+                maxlen = max(maxlen,j-i+1);
+                j++;
+            }
+            else if(map.size() == k)
+            {
+                maxlen = max(maxlen,j-i+1);
+                j++;
+            }
+            else if(map.size() > k)
+            {
+                while(map.size() > k)
+                {
+                    map[fruits[i]]--;
+                    if(map[fruits[i]] == 0)
+                    {
+                        map.erase(fruits[i]);
+                    }
+                    i++;
+                }
+                j++;
+            }
+        }
+        return maxlen;
+    }
+};
