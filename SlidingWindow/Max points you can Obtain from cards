@@ -1,0 +1,37 @@
+class Solution {
+public:
+    
+    int maxScore(vector<int>& cardPoints, int k) {
+        int n = cardPoints.size();
+        
+        int i=0,j=0;
+        int totalsum = 0;
+        for(int i=0;i<n;i++)
+            totalsum += cardPoints[i];
+        if(n ==k ) return totalsum;
+        int windowsize = n-k;
+        int maxpoints = 0,currsum=0;
+        while(j<n)
+        {
+            //process j
+            currsum += cardPoints[j];
+            if(j-i+1 < windowsize)
+            {
+                j++;
+            }
+            else if(j-i+1 == windowsize)
+            {
+                maxpoints = max(maxpoints,totalsum-currsum);
+                j++;
+            }
+            else  // j-i+1 > windowsize
+            {
+                currsum -= cardPoints[i];
+                i++;
+                maxpoints = max(maxpoints,totalsum-currsum);
+                j++;
+            }
+        }
+        return maxpoints;
+    }
+};
