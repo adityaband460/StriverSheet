@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    // int maxfreq(vector<int>&freq)
+    // {
+    //     int cnt = 0;
+    //     for(int i=0;i<freq.size();i++)
+    //     {
+    //         cnt = max(cnt , freq[i]);
+    //     }
+    //     return cnt;
+    // }
+    int characterReplacement(string s, int k) {
+        
+        int i = 0 , j = 0;
+        int n = s.size();
+        int ans = 0;
+        vector<int>freq(26,0);
+        int maxf = 0;
+        while(j < n)
+        {
+            freq[s[j]-'A']++;
+            maxf = max(maxf,freq[s[j]-'A']);
+            int windowlen = j-i+1;
+            // int largestfreq = maxf;
+            if(windowlen - maxf <= k)
+            {
+                ans = max(ans,windowlen);
+                j++;
+            }
+            else
+            {
+                while(windowlen - maxf > k)
+                {
+                    freq[s[i]-'A']--;
+                    i++;
+                    windowlen = j-i+1;
+                    // largestfreq = maxf;
+                }
+                j++;
+            }
+        }
+        return ans;
+    }
+};
