@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int ans = 0;
+        int i =0, j=0;
+        int n = s.size();
+        vector<int>map(3,0);
+        while(j < n)
+        {
+            map[s[j]-'a']++;
+            
+            if(map[0] > 0 && map[1]>0 && map[2]>0)
+            {
+                // ans += 1 + (n-j-1);// 1+ remaining chars
+                
+                while(map[0] > 0 && map[1]>0 && map[2]>0)
+                {
+                    ans += 1 + (n-j-1);// 1+ remaining chars
+                    map[s[i]-'a']--;
+                    i++;
+                }
+                j++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        return ans;
+    }
+};
