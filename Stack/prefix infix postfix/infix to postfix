@@ -1,0 +1,94 @@
+// Function to convert an infix expression to a postfix expression.
+    bool isOperand(char ch)
+    {
+        if(ch >= 'a' && ch <='z' || ch>='A' && ch <='Z'|| ch>='0' && ch <='9')
+        {
+            return true;
+        }
+        return false;
+    }
+    int getPriority(char opr)
+    {
+        if(opr =='^')
+        {
+            return 3;
+        }
+        else if(opr == '*' || opr == '/')
+        {
+            return 2;
+        }
+        else if(opr =='+' || opr == '-')
+        {
+            return 1;
+        }
+        else 
+            return 0;
+           
+    }
+    string infixToPostfix(string s) {
+        int n = s.length();
+        stack<char> st;
+        string postfix="";
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='(')
+            {
+                st.push('(');
+            }
+            else if(s[i]==')')
+            {
+                while(st.top() != '(')
+                {
+                    char temp = st.top();
+                    st.pop();
+                    postfix.push_back(temp);
+                }
+                if(st.top() == '(')
+                {
+                    st.pop();
+                }
+            }
+            else if(isOperand(s[i]))
+            {
+                postfix.push_back(s[i]);
+            }
+            else // operator
+            {
+                if(st.empty())
+                {
+                    st.push(s[i]);
+                }
+                else
+                {
+                    int incoming = getPriority(s[i]);
+                    int ontop = getPriority(st.top());
+                    // ya saheb wadyaver yaa
+                    if(incoming > ontop || ontop==0 )
+                    {
+                        st.push(s[i]);
+                    }
+                    else 
+                    {
+                        while(!st.empty() && incoming <= ontop)
+                        {
+                            char temp = st.top();
+                            postfix.push_back(temp);
+                            st.pop();
+                            if(!st.empty())
+                            ontop = getPriority(st.top());
+                        }
+                        st.push(s[i]);
+                    }
+                }
+                
+                
+            }
+            
+        }
+        while(!st.empty())
+        {
+            postfix += st.top();
+            st.pop();
+        }
+        return postfix;
+    }
