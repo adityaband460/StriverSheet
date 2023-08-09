@@ -1,0 +1,43 @@
+    string removeKdigits(string num, int k) {
+        stack<char>st;
+        int n = num.size();
+        //edge case
+        if(n <= k) return "0";
+        for(int i=0;i<n;i++)
+        {
+
+            while(!st.empty() && k > 0 && st.top() > num[i])
+            {
+                st.pop();
+                k--;
+            }
+            if(st.empty())
+            {
+                if(num[i] != '0')
+                    st.push(num[i]);
+            }
+            else
+            {
+                st.push(num[i]);
+            }
+            
+        }
+        // if k is non zero means some still can be removed
+        // "112" k=1 
+        while(k > 0 && !st.empty())
+        {
+            st.pop();
+            k--;
+        }
+        string ans ="";
+        while(!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
+     
+        //"10" k=1   edge case
+        if(ans=="") return "0";
+        return ans;
+    }
