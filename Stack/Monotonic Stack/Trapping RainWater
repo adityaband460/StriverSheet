@@ -1,1 +1,40 @@
+// can be done in O(N) space prefix and suffix  max arrays
+// optimal approcach O(1) space
+    int trap(vector<int>& height) {
+        int n = height.size();
+        if(n <= 2) return 0;
 
+        int leftbar = height[0], rightbar = height[n-1];
+        int left = 1, right = n-2;
+        int res = 0;
+        while(left <= right)
+        {
+            // find out which bar is limiting bar
+            if(leftbar < rightbar)
+            {
+                // water won't be stored
+                if(height[left] >= leftbar)
+                {
+                    leftbar = height[left];
+                }
+                else
+                {
+                    res += leftbar - height[left];
+                }
+                left++;
+            }
+            else
+            {
+                if(height[right] >= rightbar)
+                {
+                    rightbar = height[right];
+                }
+                else
+                {
+                    res += rightbar - height[right];
+                }
+                right--;
+            }
+        }
+        return res;
+    }
