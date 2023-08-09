@@ -1,0 +1,97 @@
+// TC: O(n^2) sc: O(1)
+    int solve1(vector<vector<int> >& M, int n)
+    {
+        for(int i=0;i<n;i++)
+        {
+            bool onefound = false;
+            for(int j=0;j<n;j++)
+            {
+                if(M[i][j] == 1)
+                {
+                    onefound = true;
+                    break;
+                }
+            }
+            if(!onefound)
+            {
+                for(int k= 0;k<n;k++)
+                {
+                    if(k!= i && M[k][i]==0)
+                        return -1;
+                }
+                return i;
+            }
+        }
+        return -1;
+    }
+    //TC: O(n) sc: O(n) using stack
+    int solveStack(vector<vector<int> >& M, int n)
+    {
+        stack<int>st;
+        for(int i=0;i<n;i++)
+        {
+            st.push(i);
+        }
+        while(st.size() > 1)
+        {
+            int a = st.top();
+            st.pop();
+            int b = st.top();
+            st.pop();
+            // if a knows b then a can't be celebrity
+            if(M[a][b]==1)
+            { 
+                st.push(b);
+            }
+            else // if b knows a then b can't be celebrity
+            {
+                st.push(a);
+            }
+        }
+        // when st.size() == 1
+        int potentialCandidate = st.top();
+        for(int i=0;i<n;i++)
+        {
+            if(i!=potentialCandidate)
+            {
+                // in that row all should be 0
+                // in that col all should be 1 except (start == i)
+                if(M[potentialCandidate][i]==1 || M[i][potentialCandidate]==0)
+                    return -1;
+            }
+        }
+        return potentialCandidate;
+    }
+     // TC: O(n) sc: O(1)
+    int solveBest(vector<vector<int> >& M, int n)
+    {
+        int start =0 ,end = n-1;
+        while(start < end)
+        {
+            if(M[start][end]==0)
+            {
+                end--;
+            }
+            else
+            {
+                start++;
+            }
+        }
+        // now start and end will point to same row
+        for(int i=0;i<n;i++)
+        {
+            if(i!=start)
+            {
+                // in that row all should be 0
+                // in that col all should be 1 except (start == i)
+                if(M[start][i]==1 || M[i][start]==0)
+                    return -1;
+            }
+        }
+        return start;
+    }
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+       return solveStack(M, n);
+    }
