@@ -1,0 +1,19 @@
+void sieve(vector<int>&isPrime,int N)
+    {
+        for(int i=0;i<=N;i++)
+        {
+            isPrime[i] = 1; // assume all are prime
+        }
+        isPrime[0] = 0;
+        isPrime[1] = 1;
+        for(int i=2;i<=N;i++) // can be optimized to i*i <= N
+        {
+            if(isPrime[i] == 1) // i is prime 
+            {
+                for(int j = 2*i;j <=N;j+=i) // can be optimized to j = i*i
+                {
+                    isPrime[j] = 0;// mark j as not prime 
+                }
+            }
+        }
+    }
