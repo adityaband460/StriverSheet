@@ -1,0 +1,29 @@
+void mysieve(vector<int>&spf,int N)
+    {
+        for(int i=0;i<=N;i++)
+        {
+            spf[i] = i;
+        }
+        for(int i=2;i<=N;i++) // can be optimized to i*i
+        {
+            if(spf[i] == i){
+                for(int j = i*2;j <=N;j+=i) // j= i*i  optimization possible
+                {
+                    if(spf[j]==j)
+                        spf[j] = i;
+                }
+            }
+        }
+    }
+    vector<int> findPrimeFactors(int N) {
+        vector<int>spf(N+1,0);
+        mysieve(spf,N);
+        vector<int>ans;
+        
+        while(N>1)
+        {
+            ans.push_back(spf[N]);
+            N = N/spf[N];
+        }
+        return ans;
+    }
