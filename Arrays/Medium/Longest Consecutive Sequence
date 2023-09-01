@@ -1,0 +1,60 @@
+
+
+//  n  time 
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int n = nums.size();
+        int counter = 1,maxCounter = 1;
+        unordered_set<int>st;
+        for(int i=0;i<n;i++)
+        {
+            st.insert(nums[i]);
+        }
+        for(auto it : st)
+        {
+            //check if it-1 exists in set or not ?
+            //we count seq from left to right , smallest to largest num
+            if(st.find(it-1) == st.end())
+            {
+                counter = 1;
+                int ele = it;
+                while(st.find(ele+1) != st.end())
+                {
+                    counter++;
+                    ele++;
+                }
+                maxCounter = max(maxCounter,counter);
+                
+            }
+        }
+        return maxCounter;
+    }
+
+//  n log n
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        int counter = 1, maxCounter = 1;
+        int element = nums[0];
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]==element+1)
+            {
+                counter++;
+                maxCounter = max(maxCounter,counter);
+                element++;
+            }
+            else if(nums[i]==element)
+            {
+                // do nothing
+                continue;
+            }
+            else
+            {
+                counter = 1;
+                element = nums[i];
+            }
+        }
+        return maxCounter;
+    }
