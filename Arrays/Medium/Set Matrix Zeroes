@@ -1,0 +1,86 @@
+
+
+// O(1) space storing inside matrix
+    void setZeroes(vector<vector<int>>& matrix) {
+        int rowsize = matrix.size();
+        int colsize = matrix[0].size();
+        int zerocol = 1;
+        for(int i=0;i<rowsize;i++)
+        {
+            if(matrix[i][0]==0)
+            {
+                zerocol = 0;
+                // matrix[i][0] = 0;//obviously it is already there
+            }
+            for(int j=1;j<colsize;++j)
+            {
+                if(matrix[i][j]==0)
+                {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for(int i=1;i<rowsize;i++)
+        {
+            for(int j=1;j<colsize;j++)
+            {
+                if(matrix[i][0] == 0 || matrix[0][j]==0)
+                {
+                    matrix[i][j] = 0;
+                }                
+            }
+        }
+        if(matrix[0][0] == 0)
+        {
+            for(int j=0;j<colsize;j++)
+            {
+                matrix[0][j] = 0;
+            }
+        }
+        if(zerocol == 0)
+        {
+            for(int i=0;i<rowsize;i++)
+            {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+// O(m+n) space
+    void setZeroes(vector<vector<int>>& matrix) {
+        int rowsize = matrix.size();
+        int colsize = matrix[0].size();
+        vector<int>row(rowsize,0),col(colsize,0);
+
+        for(int i=0;i<rowsize;i++)
+        {
+            for(int j=0;j<colsize;++j)
+            {
+                if(matrix[i][j]==0)
+                {
+                    row[i]=1;
+                    col[j]=1;
+                }
+            }
+        }
+        for(int i=0;i<rowsize;i++)
+        {
+            for(int j=0;j<colsize;j++)
+            {
+                if(row[i]==1 || col[j]==1)
+                matrix[i][j] = 0;
+            }
+        }
+    }
