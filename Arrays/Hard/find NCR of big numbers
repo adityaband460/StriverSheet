@@ -1,0 +1,45 @@
+int mod = 1e9+7;
+    
+    int ncrHelper(int n,int r,vector<int>&dp)
+    {
+        dp[0] = 1;
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=r;j>=1;j--)
+            {
+                dp[j] = (dp[j]+dp[j-1])%mod;
+            }
+        }
+        return dp[r];
+    }
+    int nCr(int n, int r)
+    {
+        if(n==r or r==0) return 1;
+        if(r>n) return 0;
+        
+       vector<int>dp(r+1,0);
+        return ncrHelper(n,r,dp);
+    }
+
+
+// below  approach may not work for big numbers 
+int mod = 1e9+7;
+    
+    int nCr(int n, int r)
+    {
+        long long int ans = 1;
+        if(r > n) return 0;
+        r = min(n-r,r);
+        if(r==0 or r==n) return 1;
+        
+        for(int i=0;i<r;i++)
+        {
+            ans = (ans*(n-i));
+            ans = ans/(i+1);
+            // ans = ans%mod;
+           
+        }
+        return ans;
+    }
+    
