@@ -1,0 +1,66 @@
+int merge(vector<int>&nums,int low,int mid,int high)
+    {
+        int revpairs = 0;
+        int i=low,j=mid+1;
+
+        while(i<=mid && j<=high)
+        {
+            long long twice = 2*static_cast<long long>(nums[j]);
+            if(nums[i]>twice)
+            {
+                revpairs += mid-i+1;
+                j++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        // merge logic
+        vector<int>temp;
+        i=low,j=mid+1;
+
+        while(i<=mid && j<=high)
+        {
+            if(nums[i]<=nums[j])
+            {
+                temp.push_back(nums[i]);
+                i++;
+            }
+            else
+            {
+                temp.push_back(nums[j]);
+                j++;
+            }
+        }
+        while(i<=mid)
+        {
+            temp.push_back(nums[i]);
+            i++;
+        }
+        while(j<=high)
+        {
+            temp.push_back(nums[j]);
+            j++;
+        }
+        for(int k=low;k<=high;k++)
+        {
+            nums[k] = temp[k-low];
+        }
+        return revpairs;
+    }
+    int mergeSort(vector<int>&nums,int i,int j)
+    {
+        if(i>=j) return 0;
+
+        int revpairs = 0;
+        int mid = (i+j)/2;
+        revpairs += mergeSort(nums,i,mid);
+        revpairs += mergeSort(nums,mid+1,j);
+        revpairs += merge(nums,i,mid,j);
+        return revpairs;
+    }
+    int reversePairs(vector<int>& nums) {
+        return mergeSort(nums,0,nums.size()-1);
+    }
