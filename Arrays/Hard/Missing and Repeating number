@@ -1,0 +1,56 @@
+vector<int> findTwoElement(vector<int> arr, int n) {
+        
+        //using xor
+        int xorall = 0;
+        for(int i=0;i<n;i++)
+        {
+            xorall = xorall ^ arr[i] ^ (i+1);
+        }
+       
+        //find last set bit
+        int lastsetbit = 1;
+        // these brackets are impt
+        while((xorall & lastsetbit) == 0)
+        {
+            lastsetbit = lastsetbit<<1;
+        }
+        // cout<<lastsetbit<<endl;
+        // divide based on that set bit
+        int x=0,y=0;
+        for(int i=0;i<n;i++)
+        {
+            if(arr[i] & lastsetbit)
+            {
+                x = x ^ arr[i];
+            }
+            else
+            {
+                y = y ^ arr[i];
+            }
+            if((i+1) & lastsetbit)
+            {
+                x = x ^ (i+1);
+            }
+            else
+            {
+                y = y ^ (i+1);
+            }
+        }
+        // find out which is missing and which one is repeating
+        int cnt = 0;
+        for(int i=0;i<n;i++)
+        {
+            if(arr[i]==x)
+                cnt++;
+        }
+        
+        if(cnt == 2)//x is repeating , y is missing
+        {
+            return {x,y};
+        }
+        else
+        {
+            return {y,x};
+        }
+
+    }
