@@ -1,0 +1,25 @@
+bool solve(string s1,string s2,unordered_map<string,bool>&mp)
+    {
+        if(s1.size() != s2.size()) return false;
+        if(s1==s2)return true;
+        if(s1.size() == 1) return s1==s2;
+        int n = s1.size();
+
+        string key = (s1 + " " + s2);
+        if(mp.find(key) != mp.end())
+            return mp[key];
+        for(int k=1;k<n;k++)
+        {
+            bool ans = (solve(s1.substr(0,k),s2.substr(0,k),mp) &&
+            solve(s1.substr(k,n-k),s2.substr(k,n-k),mp))
+            ||
+            (solve(s1.substr(0,k),s2.substr(n-k,k),mp) &&
+            solve(s1.substr(k,n-k),s2.substr(0,n-k),mp));
+            if(ans) return mp[key] = true;
+        }
+        return mp[key] = false;
+    }
+    bool isScramble(string s1, string s2) {
+        unordered_map<string,bool>mp;
+        return solve(s1,s2,mp);
+    }
