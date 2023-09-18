@@ -1,0 +1,33 @@
+nt solve(int i,int filled,vector<int>&nums,int k,vector<vector<int>>&dp){
+        //base case
+        
+        if(i==nums.size()) return 0;
+        //rec case
+        
+        if(dp[i][filled] != -1) return dp[i][filled];
+        if(filled == 0)// this is 1st word on current line
+        {// only 1 choice : to include this word , pick
+        
+            return dp[i][filled] = solve(i+1,nums[i],nums,k,dp);
+        }
+        else
+        {
+            int pick = 1e9,notpick = 1e9;
+            
+            if(filled + nums[i]+1 <= k)
+            {
+                pick = solve(i+1,filled+nums[i]+1,nums,k,dp);
+            }
+            int extra = k-filled; // remaining spaces
+            notpick = extra*extra + solve(i,0,nums,k,dp);
+            
+            return dp[i][filled] = min(pick,notpick);
+        }
+        
+    }
+    int solveWordWrap(vector<int>nums, int k) 
+    { 
+        int n = nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(k+1,-1));
+        return solve(0,0,nums,k,dp);
+    } 
