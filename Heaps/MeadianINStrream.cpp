@@ -92,3 +92,47 @@ int main()
 	return 0;
 }
 // } Driver Code Ends
+
+/*     ************************************************************
+	Freq array Approach: When elemements are in range [0,100] it guaranteed 
+	********************************************************************
+	--> calculate frequency array
+	--> calculate cumulative freq 
+	--> (n+1)/2 , (n+2)/2  position will have median elements
+	--> if cumilative >= above positions , we found the elements at that position
+
+	class MedianFinder {
+public:
+    int freq[101] = {};
+    int count = 0;
+
+    void addNum(int num) {
+        freq[num]++;
+        count++;
+    }
+
+    double findMedian() {
+        int left = (count + 1) / 2;
+        int right = (count + 2) / 2;
+
+        int cumulative = 0;
+        int a = -1, b = -1;
+
+        for(int x = 0; x <= 100; x++) {
+            cumulative += freq[x];
+
+            if(a == -1 && cumulative >= left)
+                a = x;
+
+            if(cumulative >= right) {
+                b = x;
+                break;
+            }
+        }
+
+        return (a + b) / 2.0;
+    }
+};
+
+
+*/
