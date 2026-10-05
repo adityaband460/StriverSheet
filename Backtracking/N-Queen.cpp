@@ -1,3 +1,5 @@
+// Time: O(n! + S × n²) : s is number or correct solutions, that we need to insert in ans array
+// Space: O(n² + S × n²)
 class Solution {
 public:
 
